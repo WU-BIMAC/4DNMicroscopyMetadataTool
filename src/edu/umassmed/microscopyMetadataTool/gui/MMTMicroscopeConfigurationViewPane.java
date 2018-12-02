@@ -29,17 +29,18 @@ import javafx.stage.Window;
 import edu.umassmed.microscopyMetadataTool.core.MMTApplication;
 import edu.umassmed.microscopyMetadataTool.data.Microscope;
 import edu.umassmed.microscopyMetadataTool.data.MicroscopeComponent;
+import edu.umassmed.microscopyMetadataTool.data.piezoelectricFocusingGroup.PiezoelectricObjectiveFocusing;
 
 public class MMTMicroscopeConfigurationViewPane extends StackPane {
-
+	
 	private final MMTApplication app;
 	private final MMTMicroscopeViewPane viewPane;
-
+	
 	private Microscope microscope;
-
+	
 	private Double mouseClickPositionX, mouseClickPositionY;
 	private Double orgSceneX, orgSceneY;
-
+	
 	public MMTMicroscopeConfigurationViewPane(final MMTApplication app,
 			final MMTMicroscopeViewPane viewPane) {
 		this.app = app;
@@ -63,12 +64,12 @@ public class MMTMicroscopeConfigurationViewPane extends StackPane {
 					BackgroundPosition.CENTER, bgSize);
 			this.setBackground(new Background(bg));
 		}
-
+		
 		this.mouseClickPositionX = null;
 		this.mouseClickPositionY = null;
 		this.orgSceneX = null;
 		this.orgSceneY = null;
-
+		
 		final ContextMenu contextMenu = new ContextMenu();
 		final MenuItem addNewElement = new MenuItem("Add element");
 		addNewElement.setOnAction(new EventHandler<ActionEvent>() {
@@ -80,11 +81,11 @@ public class MMTMicroscopeConfigurationViewPane extends StackPane {
 			}
 		});
 		contextMenu.getItems().addAll(addNewElement);
-
+		
 		this.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
 			@Override
 			public void handle(final ContextMenuEvent event) {
-				System.out.println("setOnContextMenuRequested pane");
+				// System.out.println("setOnContextMenuRequested pane");
 				final Window window = MMTMicroscopeConfigurationViewPane.this
 						.getScene().getWindow();
 				contextMenu.show(window, event.getScreenX(), event.getScreenY());
@@ -96,9 +97,9 @@ public class MMTMicroscopeConfigurationViewPane extends StackPane {
 			}
 		});
 	}
-
+	
 	public void configurePane(final List<MicroscopeComponent> elements) {
-		System.out.println("CONFIGURE PANE");
+		// System.out.println("CONFIGURE PANE");
 		this.getChildren().clear();
 		Double width = this.getWidth();
 		Double height = this.getHeight();
@@ -135,7 +136,7 @@ public class MMTMicroscopeConfigurationViewPane extends StackPane {
 			b.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
 				@Override
 				public void handle(final ContextMenuEvent event) {
-					System.out.println("setOnContextMenuRequested button");
+					// System.out.println("setOnContextMenuRequested button");
 					final Window window = MMTMicroscopeConfigurationViewPane.this
 							.getScene().getWindow();
 					contextMenu.show(window, event.getScreenX(),
@@ -145,13 +146,18 @@ public class MMTMicroscopeConfigurationViewPane extends StackPane {
 			});
 			final Double y1 = height - y - b.getPrefHeight();
 			final Double x1 = width - x - b.getPrefWidth();
-			this.getChildren().add(b);
+			// FIXME workaround to set Objective in front of Piezo
+			if (element instanceof PiezoelectricObjectiveFocusing) {
+				this.getChildren().add(0, b);
+			} else {
+				this.getChildren().add(b);
+			}
 			final Insets insets = new Insets(y, x1, y1, x);
 			StackPane.setMargin(b, insets);
 			b.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(final ActionEvent evt) {
-					System.out.println("setOnAction");
+					// System.out.println("setOnAction");
 					if ((b.getUserData() == null)
 							|| !((boolean) b.getUserData())) {
 						MMTMicroscopeConfigurationViewPane.this.viewPane
@@ -164,7 +170,7 @@ public class MMTMicroscopeConfigurationViewPane extends StackPane {
 				public void handle(final MouseEvent event) {
 					b.setOpacity(0.4);
 				}
-				
+
 			});
 			b.setOnMouseExited(new EventHandler<MouseEvent>() {
 				@Override
@@ -178,9 +184,9 @@ public class MMTMicroscopeConfigurationViewPane extends StackPane {
 					if ((mouseEvent.getButton() == MouseButton.SECONDARY)
 							|| ((mouseEvent.getButton() == MouseButton.PRIMARY) && mouseEvent
 									.isControlDown())) {
-
+						
 					} else {
-						System.out.println("setOnMousePressed");
+						// System.out.println("setOnMousePressed");
 						b.setBorder(new Border(new BorderStroke(Color.BLACK,
 								BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
 								BorderWidths.DEFAULT)));
@@ -196,11 +202,11 @@ public class MMTMicroscopeConfigurationViewPane extends StackPane {
 			b.setOnMouseReleased(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(final MouseEvent mouseEvent) {
-					System.out.println("setOnMouseReleased");
+					// System.out.println("setOnMouseReleased");
 					b.setUserData(false);
 					b.setBorder(null);
-					b.toFront();
 					b.setCursor(Cursor.HAND);
+					b.toFront();
 					final Double offsetX = b.getTranslateX();
 					final Double offsetY = b.getTranslateY();
 					if ((offsetX != 0) || (offsetY != 0)) {
@@ -215,7 +221,7 @@ public class MMTMicroscopeConfigurationViewPane extends StackPane {
 			b.setOnMouseDragged(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(final MouseEvent mouseEvent) {
-					System.out.println("setOnMouseDragged");
+					// System.out.println("setOnMouseDragged");
 					if ((MMTMicroscopeConfigurationViewPane.this.orgSceneX == null)
 							|| (MMTMicroscopeConfigurationViewPane.this.orgSceneY == null))
 						return;
@@ -231,7 +237,7 @@ public class MMTMicroscopeConfigurationViewPane extends StackPane {
 			// DragResizer.makeResizable(b);
 		}
 	}
-
+	
 	public void setMicroscope(final Microscope mic) {
 		this.microscope = mic;
 		if (this.microscope != null) {

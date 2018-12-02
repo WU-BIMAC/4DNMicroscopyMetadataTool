@@ -79,7 +79,7 @@ public class MMTApplication extends Application {
 	private Map<String, String> loadSavedMicroscopes(final String folder)
 			throws IOException {
 		final Map<String, String> microscopesNames = new LinkedHashMap<String, String>();
-		final File dir = new File(System.getProperty("user.dir") + "/"
+		final File dir = new File(System.getProperty("user.dir")
 				+ File.separator + folder);
 		for (final File micDir : dir.listFiles()) {
 			for (final File f : micDir.listFiles()) {
