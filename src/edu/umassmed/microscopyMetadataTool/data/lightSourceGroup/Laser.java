@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class Laser extends LightSourceFluorescenceGroup {
 
-	private static Integer TIER = 2;
+	private static Integer TIER = 1;
 	
 	private final String type;
 	private final String laserMedium;
@@ -31,6 +31,9 @@ public class Laser extends LightSourceFluorescenceGroup {
 	@Override
 	public Map<String, Integer> getTiers() {
 		final Map<String, Integer> tiers = super.getTiers();
+		tiers.put("tier", 3);
+		tiers.put("manufacturer", 3);
+		tiers.put("model", 3);
 		tiers.put("type", 5);
 		tiers.put("laserMedium", 5);
 		tiers.put("wavelength", 2);

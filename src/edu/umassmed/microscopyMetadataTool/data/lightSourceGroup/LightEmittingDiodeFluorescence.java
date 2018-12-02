@@ -5,7 +5,7 @@ import java.util.Map;
 public class LightEmittingDiodeFluorescence extends
 		LightSourceFluorescenceGroup {
 
-	private static Integer TIER = 2;
+	private static Integer TIER = 1;
 	
 	private final String type;
 	// private final String wavelengthRange;
@@ -32,6 +32,8 @@ public class LightEmittingDiodeFluorescence extends
 	@Override
 	public Map<String, Integer> getTiers() {
 		final Map<String, Integer> tiers = super.getTiers();
+		tiers.put("manufacturer", 3);
+		tiers.put("model", 3);
 		tiers.put("type", 3);
 		// tiers.put("wavelengthRange", 2);
 		tiers.put("projectionAngle", 5);

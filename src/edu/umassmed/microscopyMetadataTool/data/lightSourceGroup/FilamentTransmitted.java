@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class FilamentTransmitted extends LightSourceTransmittedGroup {
 	
-	private static Integer TIER = 3;
+	private static Integer TIER = 1;
 
 	private final String type;
 	
@@ -18,6 +18,8 @@ public class FilamentTransmitted extends LightSourceTransmittedGroup {
 	@Override
 	public Map<String, Integer> getTiers() {
 		final Map<String, Integer> tiers = super.getTiers();
+		tiers.put("manufacturer", 3);
+		tiers.put("model", 3);
 		tiers.put("type", 3);
 		return tiers;
 	}
