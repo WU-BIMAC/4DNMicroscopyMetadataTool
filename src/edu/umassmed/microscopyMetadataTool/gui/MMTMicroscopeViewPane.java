@@ -8,6 +8,8 @@ import java.util.Map;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
@@ -23,13 +25,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Window;
+import javafx.util.Callback;
 import edu.umassmed.microscopyMetadataTool.core.MMTApplication;
 import edu.umassmed.microscopyMetadataTool.data.GenericElement;
 import edu.umassmed.microscopyMetadataTool.data.Microscope;
 import edu.umassmed.microscopyMetadataTool.data.MicroscopeComponent;
 
 public class MMTMicroscopeViewPane extends BorderPane {
-
+	
 	private static final String BACK_BUTTON = "Back";
 	private static final String EDIT_ON_BUTTON = "Edit on";
 	private static final String EDIT_OFF_BUTTON = "Edit off";
@@ -50,18 +53,18 @@ public class MMTMicroscopeViewPane extends BorderPane {
 	
 	public MMTMicroscopeViewPane(final MMTApplication app) {
 		this.app = app;
-
+		
 		this.mic = null;
-
+		
 		this.elements = new ArrayList<MicroscopeComponent>();
-
+		
 		this.micFieldsMap = new LinkedHashMap<String, Map<String, TextField>>();
 		;
-
+		
 		this.setPadding(new Insets(MMTGUIConstants.PADDING));
-
+		
 		final FlowPane tp = this.createMicroscopeTabPane();
-
+		
 		final GridPane bottomPane = new GridPane();
 		// bottomPane.setBorder(new Border(new BorderStroke(Color.BLACK,
 		// BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
@@ -78,13 +81,13 @@ public class MMTMicroscopeViewPane extends BorderPane {
 			}
 		});
 		bottomPane.add(this.backButton, 0, 0);
-
+		
 		final Pane spacer = new Pane();
 		GridPane.setHgrow(spacer, Priority.ALWAYS);
 		spacer.setMinWidth(MMTGUIConstants.FIELD_WIDTH_NORMAL);
 		// spacer.setPrefWidth(MMTGUIConstants.BUTTON_WIDTH_NORMAL);
 		bottomPane.add(spacer, 1, 0);
-
+		
 		// this.editButton = new Button(MMTMicroscopeViewPane.EDIT_ON_BUTTON);
 		// this.editButton.setPrefWidth(MMTGUIConstants.FIELD_WIDTH_SMALL);
 		// this.editButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -103,7 +106,7 @@ public class MMTMicroscopeViewPane extends BorderPane {
 		// }
 		// });
 		// bottomPane.add(this.editButton, 2, 0);
-
+		
 		this.saveButton = new Button(MMTMicroscopeViewPane.SAVE_BUTTON);
 		this.saveButton.setPrefWidth(MMTGUIConstants.FIELD_WIDTH_SMALL);
 		this.saveButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -123,20 +126,27 @@ public class MMTMicroscopeViewPane extends BorderPane {
 				}
 				MMTMicroscopeViewPane.this.mic.setFields(results);
 				app.export();
+				final Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("MMT - Save complete");
+				alert.setHeaderText(null);
+				alert.setContentText("Microscope "
+						+ MMTMicroscopeViewPane.this.mic.getName()
+						+ " was succesfully saved");
+				alert.showAndWait();
 			}
 		});
 		bottomPane.add(this.saveButton, 2, 0);
-
+		
 		this.configViewPane = new MMTMicroscopeConfigurationViewPane(app, this);
 		final ScrollPane sp = new ScrollPane();
 		final BorderPane bp = new BorderPane();
 		bp.setCenter(this.configViewPane);
 		sp.setContent(bp);
-
+		
 		this.setTop(tp);
 		this.setCenter(sp);
 		this.setBottom(bottomPane);
-
+		
 		// final InvalidationListener listener = new InvalidationListener() {
 		// @Override
 		// public void invalidated(final Observable o) {
@@ -149,7 +159,7 @@ public class MMTMicroscopeViewPane extends BorderPane {
 		// this.widthProperty().addListener(listener);
 		// this.heightProperty().addListener(listener);
 	}
-
+	
 	public void configurePane(final List<MicroscopeComponent> elements) {
 		this.elements.clear();
 		this.elements.addAll(elements);
@@ -157,7 +167,7 @@ public class MMTMicroscopeViewPane extends BorderPane {
 	}
 	
 	// TODO maybe refactor below in app/core ?
-
+	
 	public void editElement(final MicroscopeComponent element) {
 		final Window window = this.getScene().getWindow();
 		final String title = "Edit " + element.getName();
@@ -171,7 +181,7 @@ public class MMTMicroscopeViewPane extends BorderPane {
 			this.app.updateElementsAndPositions(MMTMicroscopeViewPane.this.elements);
 		}
 	}
-
+	
 	private Dialog<Map<String, Map<String, String>>> getEditDialog(
 			final Window owner, final String title,
 			final MicroscopeComponent element) {
@@ -185,7 +195,7 @@ public class MMTMicroscopeViewPane extends BorderPane {
 				.addAll(ButtonType.FINISH, ButtonType.CANCEL);
 		final Integer tier = this.mic.getTier();
 		final TabPane tabPane = new TabPane();
-
+		
 		for (final String key : contents.keySet()) {
 			final Map<String, TextField> localFields = new LinkedHashMap<String, TextField>();
 			final Map<String, String> contentsFields = contents.get(key);
@@ -235,27 +245,32 @@ public class MMTMicroscopeViewPane extends BorderPane {
 			tab.setContent(sp);
 			tabPane.getTabs().add(tab);
 		}
-
+		
 		final double width = (((MMTGUIConstants.FIELD_WIDTH_XLARGE * 2) + 5) * 2) + 60;
 		final double height = MMTGUIConstants.FIELD_HEIGHT * 13;
 		tabPane.setPrefHeight(height);
 		tabPane.setPrefWidth(width);
-
+		
 		dialog.getDialogPane().setContent(tabPane);
-		dialog.setResultConverter(dialogButton -> {
-			if (dialogButton == ButtonType.FINISH) {
-				final Map<String, Map<String, String>> results = new LinkedHashMap<String, Map<String, String>>();
-				for (final String key : fields.keySet()) {
-					final Map<String, String> localResults = new LinkedHashMap<String, String>();
-					final Map<String, TextField> localFields = fields.get(key);
-					for (final String desc : localFields.keySet()) {
-						localResults.put(desc, localFields.get(desc).getText());
+		dialog.setResultConverter(new Callback<ButtonType, Map<String, Map<String, String>>>() {
+			@Override
+			public Map<String, Map<String, String>> call(final ButtonType param) {
+				if (param == ButtonType.FINISH) {
+					final Map<String, Map<String, String>> results = new LinkedHashMap<String, Map<String, String>>();
+					for (final String key : fields.keySet()) {
+						final Map<String, String> localResults = new LinkedHashMap<String, String>();
+						final Map<String, TextField> localFields = fields
+								.get(key);
+						for (final String desc : localFields.keySet()) {
+							localResults.put(desc, localFields.get(desc)
+									.getText());
+						}
+						results.put(key, localResults);
 					}
-					results.put(key, localResults);
+					return results;
 				}
-				return results;
+				return null;
 			}
-			return null;
 		});
 		return dialog;
 	}
@@ -283,7 +298,7 @@ public class MMTMicroscopeViewPane extends BorderPane {
 				window, title, x, y);
 		dialog.showAndWait();
 		final MicroscopeComponent result = dialog.getResult();
-
+		
 		if (result != null) {
 			this.elements.add(result);
 			this.app.updateElementsAndPositions(MMTMicroscopeViewPane.this.elements);
@@ -311,21 +326,26 @@ public class MMTMicroscopeViewPane extends BorderPane {
 		pane.getChildren().add(new Label("Select element to add: "));
 		pane.getChildren().add(combo);
 		dialog.getDialogPane().setContent(pane);
-		dialog.setResultConverter(dialogButton -> {
-			if (dialogButton == ButtonType.FINISH) {
-				for (final Class<? extends GenericElement> clazz : availableComponents) {
-					if (clazz.getSimpleName().equals(combo.getValue())) {
-						try {
-							return (MicroscopeComponent) clazz.getConstructor(
-									new Class[] { Double.class, Double.class })
-									.newInstance(x, y);
-						} catch (final Exception ex) {
-							ex.printStackTrace();
+		dialog.setResultConverter(new Callback<ButtonType, MicroscopeComponent>() {
+			@Override
+			public MicroscopeComponent call(final ButtonType param) {
+				if (param == ButtonType.FINISH) {
+					for (final Class<? extends GenericElement> clazz : availableComponents) {
+						if (clazz.getSimpleName().equals(combo.getValue())) {
+							try {
+								return (MicroscopeComponent) clazz
+										.getConstructor(
+												new Class[] { Double.class,
+														Double.class })
+										.newInstance(x, y);
+							} catch (final Exception ex) {
+								ex.printStackTrace();
+							}
 						}
 					}
 				}
+				return null;
 			}
-			return null;
 		});
 		return dialog;
 	}
@@ -338,7 +358,7 @@ public class MMTMicroscopeViewPane extends BorderPane {
 		this.setBottom(this.getBottom());
 		this.configViewPane.setMicroscope(mic);
 	}
-
+	
 	private FlowPane createMicroscopeTabPane() {
 		final FlowPane flowPane = new FlowPane();
 		flowPane.setPadding(new Insets(MMTGUIConstants.PADDING));

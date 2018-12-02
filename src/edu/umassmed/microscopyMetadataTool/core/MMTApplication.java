@@ -9,8 +9,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javafx.application.Application;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import edu.umassmed.microscopyMetadataTool.data.GenericElement;
 import edu.umassmed.microscopyMetadataTool.data.Microscope;
@@ -251,27 +255,28 @@ public class MMTApplication extends Application {
 		final List<MicroscopeComponent> loadedElements = new ArrayList<MicroscopeComponent>();
 		final Microscope loadedMic = this.importer.importMicroscope(path,
 				loadedElements);
-		this.microscope = loadedMic;
 		this.elements.clear();
-		if (this.microscope.getTier() != this.selectedTier) {
-			// TODO dialog continue / cancel because of different tier
+		if (loadedMic.getTier() != this.selectedTier) {
+			final Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("MMT - Open microscope with different tier");
+			alert.setHeaderText(null);
+			alert.setContentText("Microscope " + loadedMic.getName()
+					+ " has tier " + loadedMic.getTier()
+					+ " while you have selected tier " + this.selectedTier
+					+ ". Continue?");
+			final Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() != ButtonType.OK)
+				return;
 			for (final MicroscopeComponent element : loadedElements) {
 				if (element.getTier() <= this.selectedTier) {
 					this.elements.add(element);
-				} else {
-					// final Separator sep = new
-					// Separator(element.getPositionX(),
-					// element.getPositionY());
-					// sep.setPercentSizeWidth(element.getPercentSizeWidth());
-					// sep.setPercentSizeHeight(element.getPercentSizeHeight());
-					// sep.setSpanX(element.getSpanX());
-					// sep.setSpanY(element.getSpanY());
-					// this.elements.add(sep);
 				}
 			}
 		} else {
 			this.elements.addAll(loadedElements);
 		}
+		
+		this.microscope = loadedMic;
 		this.microscope.setTier(this.selectedTier);
 		this.microscopeViewStage.setMicroscope(this.microscope);
 		this.handleShowMicroscopeViewStage();
@@ -287,28 +292,27 @@ public class MMTApplication extends Application {
 			final String path = this.defaultMicroscopesPaths.get(value);
 			loadedMic = this.importer.importMicroscope(path, loadedElements);
 		}
-		this.microscope = loadedMic;
 		this.elements.clear();
-		if (this.microscope.getTier() != this.selectedTier) {
-			// TODO dialog continue / cancel because of different tier
+		if (loadedMic.getTier() != this.selectedTier) {
+			final Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("MMT - Create microscope with different tier");
+			alert.setHeaderText(null);
+			alert.setContentText("Microscope " + loadedMic.getName()
+					+ " has tier " + loadedMic.getTier()
+					+ " while you have selected tier " + this.selectedTier
+					+ ". Continue?");
+			final Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() != ButtonType.OK)
+				return;
 			for (final MicroscopeComponent element : loadedElements) {
 				if (element.getTier() <= this.selectedTier) {
 					this.elements.add(element);
-				} else {
-					// final Separator sep = new
-					// Separator(element.getPositionX(),
-					// element.getPositionY());
-					// sep.setPercentSizeWidth(element.getPercentSizeWidth());
-					// sep.setPercentSizeHeight(element.getPercentSizeHeight());
-					// sep.setSpanX(element.getSpanX());
-					// sep.setSpanY(element.getSpanY());
-					// this.elements.add(sep);
 				}
 			}
 		} else {
 			this.elements.addAll(loadedElements);
 		}
-		
+		this.microscope = loadedMic;
 		this.microscope.setTier(this.selectedTier);
 		this.microscopeViewStage.setMicroscope(this.microscope);
 		this.handleShowMicroscopeViewStage();
