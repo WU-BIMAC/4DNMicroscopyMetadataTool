@@ -1,0 +1,44 @@
+package edu.umassmed.microscopyMetadataTool.data.lightSourceGroup;
+
+import java.util.Map;
+
+public class LightEmittingDiodeFluorescence extends
+		LightSourceFluorescenceGroup {
+
+	private static Integer TIER = 2;
+	
+	private final String type;
+	// private final String wavelengthRange;
+	private final String projectionAngle;
+	private final String waveLengthAtPeak;
+	private final String lumenPower;
+	private final String lowerWavelengthAtHalfPeak;
+	private final String upperWavelengthAtHalfPeak;
+
+	public LightEmittingDiodeFluorescence(final Double positionX,
+			final Double positionY) {
+		super("New LightEmittingDiodeFluorescence",
+				LightEmittingDiodeFluorescence.TIER, positionX, positionY);
+		
+		this.type = "type";
+		// this.wavelengthRange = "NA";
+		this.projectionAngle = "projectionAngle";
+		this.waveLengthAtPeak = "waveLengthAtPeak";
+		this.lumenPower = "lumenPower";
+		this.lowerWavelengthAtHalfPeak = "lowerWavelengthAtHalfPeak";
+		this.upperWavelengthAtHalfPeak = "upperWavelengthAtHalfPeak";
+	}
+
+	@Override
+	public Map<String, Integer> getTiers() {
+		final Map<String, Integer> tiers = super.getTiers();
+		tiers.put("type", 3);
+		// tiers.put("wavelengthRange", 2);
+		tiers.put("projectionAngle", 5);
+		tiers.put("waveLengthAtPeak", 2);
+		tiers.put("lumenPower", 3);
+		tiers.put("LowerWavelengthAtHalfPeak", 5);
+		tiers.put("UpperWavelengthAtHalfPeak", 5);
+		return tiers;
+	}
+}
