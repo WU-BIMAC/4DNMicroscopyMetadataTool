@@ -1,10 +1,23 @@
 package edu.umassmed.microscopyMetadataTool.data.lightSourceGroup;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
+
+import javafx.scene.image.Image;
 
 public class FilamentTransmitted extends LightSourceTransmittedGroup {
 	
 	private static Integer TIER = 1;
+	private static Double PERCENT_WIDTH = 0.1297843404;
+	private static Double PERCENT_HEIGHT = 0.1418301923;
+	
+	private static final Path path = Paths.get(System.getProperty("user.dir")
+			+ File.separator + "images" + File.separator
+			+ "LightSource_Transmitted_Filament.png");
+	private static final Image img = new Image(FilamentTransmitted.path.toUri()
+			.toString());
 
 	private final String type;
 	
@@ -13,6 +26,9 @@ public class FilamentTransmitted extends LightSourceTransmittedGroup {
 				positionY);
 
 		this.type = "type";
+		
+		this.setPercentSizeWidth(FilamentTransmitted.PERCENT_WIDTH);
+		this.setPercentSizeHeight(FilamentTransmitted.PERCENT_HEIGHT);
 	}
 	
 	@Override
@@ -22,5 +38,10 @@ public class FilamentTransmitted extends LightSourceTransmittedGroup {
 		tiers.put("model", 3);
 		tiers.put("type", 3);
 		return tiers;
+	}
+
+	@Override
+	public Image getImage() {
+		return FilamentTransmitted.img;
 	}
 }

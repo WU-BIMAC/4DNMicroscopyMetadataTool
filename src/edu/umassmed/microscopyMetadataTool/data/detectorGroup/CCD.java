@@ -1,10 +1,22 @@
 package edu.umassmed.microscopyMetadataTool.data.detectorGroup;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
+
+import javafx.scene.image.Image;
 
 public class CCD extends CameraGroup {
 	
 	public static Integer TIER = 2;
+	private static Double PERCENT_WIDTH = 0.2220711094;
+	private static Double PERCENT_HEIGHT = 0.1455216631;
+	
+	private static final Path path = Paths.get(System.getProperty("user.dir")
+			+ File.separator + "images" + File.separator
+			+ "Detector_Camera_CCD.png");
+	private static final Image img = new Image(CCD.path.toUri().toString());
 
 	private final String type;
 
@@ -13,8 +25,8 @@ public class CCD extends CameraGroup {
 
 		this.type = "type";
 
-		this.setPercentSizeWidth(0.19);
-		this.setPercentSizeHeight(0.46);
+		this.setPercentSizeWidth(CCD.PERCENT_WIDTH);
+		this.setPercentSizeHeight(CCD.PERCENT_HEIGHT);
 	}
 	
 	@Override
@@ -26,5 +38,10 @@ public class CCD extends CameraGroup {
 
 	public static Integer getStaticTier() {
 		return CCD.TIER;
+	}
+
+	@Override
+	public Image getImage() {
+		return CCD.img;
 	}
 }

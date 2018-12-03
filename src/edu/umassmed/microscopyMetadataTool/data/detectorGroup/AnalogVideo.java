@@ -1,10 +1,23 @@
 package edu.umassmed.microscopyMetadataTool.data.detectorGroup;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
+
+import javafx.scene.image.Image;
 
 public class AnalogVideo extends CameraGroup {
 
 	private static Integer TIER = 2;
+	private static Double PERCENT_WIDTH = 0.2220711094;
+	private static Double PERCENT_HEIGHT = 0.1455216631;
+	
+	private static final Path path = Paths.get(System.getProperty("user.dir")
+			+ File.separator + "images" + File.separator
+			+ "Detector_Camera_AnalogVideo.png");
+	private static final Image img = new Image(AnalogVideo.path.toUri()
+			.toString());
 
 	private final String type;
 
@@ -13,8 +26,8 @@ public class AnalogVideo extends CameraGroup {
 
 		this.type = "type";
 
-		this.setPercentSizeWidth(0.19);
-		this.setPercentSizeHeight(0.46);
+		this.setPercentSizeWidth(AnalogVideo.PERCENT_WIDTH);
+		this.setPercentSizeHeight(AnalogVideo.PERCENT_HEIGHT);
 	}
 
 	@Override
@@ -26,5 +39,10 @@ public class AnalogVideo extends CameraGroup {
 	
 	public static Integer getStaticTier() {
 		return AnalogVideo.TIER;
+	}
+
+	@Override
+	public Image getImage() {
+		return AnalogVideo.img;
 	}
 }

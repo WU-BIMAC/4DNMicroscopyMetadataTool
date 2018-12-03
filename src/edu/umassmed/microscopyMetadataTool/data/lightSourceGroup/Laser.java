@@ -1,10 +1,22 @@
 package edu.umassmed.microscopyMetadataTool.data.lightSourceGroup;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
+
+import javafx.scene.image.Image;
 
 public class Laser extends LightSourceFluorescenceGroup {
 
 	private static Integer TIER = 1;
+	private static Double PERCENT_WIDTH = 0.2333398096;
+	private static Double PERCENT_HEIGHT = 0.09928113464;
+
+	private static final Path path = Paths.get(System.getProperty("user.dir")
+			+ File.separator + "images" + File.separator
+			+ "LightSource_Fluorescence_Laser.png");
+	private static final Image img = new Image(Laser.path.toUri().toString());
 	
 	private final String type;
 	private final String laserMedium;
@@ -26,6 +38,9 @@ public class Laser extends LightSourceFluorescenceGroup {
 		this.pulse = "pulse";
 		this.pockelCell = "pockelCell";
 		this.repetitionRate = "repetitionRate";
+
+		this.setPercentSizeWidth(Laser.PERCENT_WIDTH);
+		this.setPercentSizeHeight(Laser.PERCENT_HEIGHT);
 	}
 
 	@Override
@@ -40,8 +55,13 @@ public class Laser extends LightSourceFluorescenceGroup {
 		tiers.put("frequencyMultiplication", 5);
 		tiers.put("tuneable", 5);
 		tiers.put("pulse", 5);
-		tiers.put("pockelCell", 2);
+		tiers.put("pockelCell", 5);
 		tiers.put("repetitionRate", 5);
 		return tiers;
+	}
+
+	@Override
+	public Image getImage() {
+		return Laser.img;
 	}
 }

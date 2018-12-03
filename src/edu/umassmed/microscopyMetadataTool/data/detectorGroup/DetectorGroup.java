@@ -1,12 +1,11 @@
 package edu.umassmed.microscopyMetadataTool.data.detectorGroup;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import edu.umassmed.microscopyMetadataTool.data.MicroscopeComponent;
 
 public abstract class DetectorGroup extends MicroscopeComponent {
-	
+
 	private final String relayMagnification;
 	private final String gain;
 	private final String offset;
@@ -21,11 +20,11 @@ public abstract class DetectorGroup extends MicroscopeComponent {
 	private final String ambientOperatingTemperature;
 	private final String ambientOperatingHumidity;
 	private final String annotationRef;
-	
+
 	public DetectorGroup(final String name, final Integer tier,
 			final Double positionX, final Double positionY) {
 		super(name, tier, positionX, positionY);
-
+		
 		this.relayMagnification = "relayMagnification";
 		this.gain = "gain";
 		this.offset = "offset";
@@ -40,14 +39,11 @@ public abstract class DetectorGroup extends MicroscopeComponent {
 		this.ambientOperatingTemperature = "ambientOperatingTemperature";
 		this.ambientOperatingHumidity = "ambientOperatingHumidity";
 		this.annotationRef = "annotationRef";
-
-		this.setPercentSizeWidth(0.19);
-		this.setPercentSizeHeight(0.46);
 	}
-	
+
 	@Override
 	public Map<String, Integer> getTiers() {
-		final Map<String, Integer> tiers = new LinkedHashMap<String, Integer>();
+		final Map<String, Integer> tiers = super.getTiers();
 		tiers.put("relayMagnification", 2);
 		tiers.put("gain", 3);
 		tiers.put("offset", 3);
@@ -56,7 +52,7 @@ public abstract class DetectorGroup extends MicroscopeComponent {
 		tiers.put("noiseModel", 5);
 		tiers.put("darkCurrentRate", 5);
 		tiers.put("peakWavelength", 5);
-		tiers.put("quantumEfficiencyatPeakWavelength", 5);
+		tiers.put("quantumEfficiencyAtPeakWavelength", 5);
 		tiers.put("lowerWavelengthAtHalfPeak", 5);
 		tiers.put("upperWavelengthAtHalfPeak", 5);
 		tiers.put("ambientOperatingTemperature", 5);

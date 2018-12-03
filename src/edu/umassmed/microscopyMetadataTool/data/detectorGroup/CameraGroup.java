@@ -8,15 +8,16 @@ import java.util.Map;
 import javafx.scene.image.Image;
 
 public abstract class CameraGroup extends DetectorGroup {
-	
+
 	private static Double PERCENT_WIDTH = 0.2220711094;
 	private static Double PERCENT_HEIGHT = 0.1455216631;
 	
 	private static final Path path = Paths.get(System.getProperty("user.dir")
-			+ File.separator + "images" + File.separator + "Camera.png");
+			+ File.separator + "images" + File.separator
+			+ "Detector_Camera_Generic.png");
 	private static final Image img = new Image(CameraGroup.path.toUri()
 			.toString());
-	
+
 	private final String illumination;
 	private final String arrayWidth;
 	private final String arrayHeight;
@@ -28,11 +29,11 @@ public abstract class CameraGroup extends DetectorGroup {
 	private final String registerWellCapacity;
 	private final String verticalClockSpeed;
 	private final String maximumReadoutRate;
-	
+
 	public CameraGroup(final String name, final Integer tier,
 			final Double positionX, final Double positionY) {
 		super(name, tier, positionX, positionY);
-		
+
 		this.illumination = "illumination";
 		this.arrayWidth = "arrayWidth";
 		this.arrayHeight = "arrayHeight";
@@ -44,11 +45,11 @@ public abstract class CameraGroup extends DetectorGroup {
 		this.registerWellCapacity = "registerWellCapacity";
 		this.verticalClockSpeed = "verticalClockSpeed";
 		this.maximumReadoutRate = "maximumReadoutRate";
-		
+
 		this.setPercentSizeWidth(CameraGroup.PERCENT_WIDTH);
 		this.setPercentSizeHeight(CameraGroup.PERCENT_HEIGHT);
 	}
-	
+
 	@Override
 	public Map<String, Integer> getTiers() {
 		final Map<String, Integer> tiers = super.getTiers();

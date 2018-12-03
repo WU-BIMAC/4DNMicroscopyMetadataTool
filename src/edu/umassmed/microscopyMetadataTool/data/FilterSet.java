@@ -21,9 +21,9 @@ public class FilterSet extends MicroscopeComponent {
 	private static final Image img = new Image(FilterSet.path.toUri()
 			.toString());
 
-	private final ExcitationFilter excitationFilter;
-	private final Dichroic dichroic;
 	private final EmissionFilter emissionFilter;
+	private final Dichroic dichroic;
+	private final ExcitationFilter excitationFilter;
 
 	public FilterSet(final Double positionX, final Double positionY) {
 		super("New FilterSet", FilterSet.TIER, positionX, positionY);
@@ -40,6 +40,9 @@ public class FilterSet extends MicroscopeComponent {
 	public Map<String, Integer> getTiers() {
 		final Map<String, Integer> tiers = super.getTiers();
 		tiers.put("model", 3);
+		tiers.putAll(this.excitationFilter.getTiers());
+		tiers.putAll(this.dichroic.getTiers());
+		tiers.putAll(this.emissionFilter.getTiers());
 		return tiers;
 	}
 	
