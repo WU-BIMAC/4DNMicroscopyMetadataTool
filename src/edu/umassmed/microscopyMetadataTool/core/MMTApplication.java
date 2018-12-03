@@ -24,69 +24,75 @@ import edu.umassmed.microscopyMetadataTool.gui.MMTMicroscopeViewStage;
 import edu.umassmed.microscopyMetadataTool.gui.MMTOpenMicroscopeStage;
 
 public class MMTApplication extends Application {
-	
+
 	private Stage primaryStage;
-	
+
 	private final MMTActionStage actionStage;
 	private final MMTOpenMicroscopeStage newMicroscopeStage;
 	private final MMTOpenMicroscopeStage openMicroscopeStage;
 	private final MMTMicroscopeViewStage microscopeViewStage;
 	// private final MicroscopeSetupStage microscopeSetupStage;
-	
+
 	private boolean started;
-	
+
 	final List<MicroscopeComponent> elements;
-	
+
 	private final MicroscopeExporter exporter;
 	private final MicroscopeImporter importer;
-	
+
 	private static final String CREATE_NEW = "Create from scratch";
-	
+
 	// private static int SEP_COUNTER = 0;
 	// private static int CONN_COUNTER = 0;
-	
+
 	private Map<String, String> defaultMicroscopesPaths;
 	private Map<String, String> loadableMicroscopesPaths;
-	
+
 	private Microscope microscope;
-	
+
 	private Integer selectedTier;
-	
+
 	public MMTApplication() {
-		
+
 		this.actionStage = new MMTActionStage(this);
 		this.newMicroscopeStage = new MMTOpenMicroscopeStage(this, true);
 		this.openMicroscopeStage = new MMTOpenMicroscopeStage(this, false);
 		this.microscopeViewStage = new MMTMicroscopeViewStage(this);
-		
+
 		this.started = true;
-		
+
 		this.elements = new ArrayList<MicroscopeComponent>();
-		
+
 		// this.savedMicroscopesNames = this.loadSavedMicroscopesNames();
-		
+
 		this.microscope = null;
-		
+
 		this.exporter = new MicroscopeExporter();
 		this.importer = new MicroscopeImporter();
 		// this.initDebug();
-		
+
 		// this.newMicroscopeStage.setLoadableMicroscopes(defaultMicroscopesPaths);
-		
+
 		// this.openMicroscopeStage.setLoadableMicroscopes(loadableMicroscopes);
 	}
-	
+
 	public void export() {
 		this.exporter.exportMicroscope(this.microscope, this.elements);
 	}
-	
+
 	private Map<String, String> loadSavedMicroscopes(final String folder)
 			throws IOException {
 		final Map<String, String> microscopesNames = new LinkedHashMap<String, String>();
 		final File dir = new File(System.getProperty("user.dir")
 				+ File.separator + folder);
 		for (final File micDir : dir.listFiles()) {
+			if (!micDir.isDirectory()) {
+				continue;
+			}
 			for (final File f : micDir.listFiles()) {
+				if (!f.getName().endsWith(".txt")) {
+					continue;
+				}
 				final int index = f.getName().lastIndexOf(".");
 				final String fileName = f.getName().substring(0, index);
 				if (!micDir.getName().equals(fileName)) {
@@ -116,10 +122,10 @@ public class MMTApplication extends Application {
 		}
 		return microscopesNames;
 	}
-	
+
 	public List<Class<? extends GenericElement>> getAvailableComponents() {
 		final List<Class<? extends GenericElement>> availableComponents = new ArrayList<Class<? extends GenericElement>>();
-		
+
 		final List<Class<? extends MicroscopeComponent>> classes = ClassUtils
 				.getAllComponentsClasses();
 		for (final Class<? extends MicroscopeComponent> clazz : classes) {
@@ -127,7 +133,7 @@ public class MMTApplication extends Application {
 			try {
 				field = clazz.getDeclaredField("TIER");
 			} catch (final Exception ex) {
-				
+
 			}
 			if (field != null) {
 				field.setAccessible(true);
@@ -135,9 +141,9 @@ public class MMTApplication extends Application {
 				try {
 					value = field.get(clazz);
 				} catch (final IllegalArgumentException ex) {
-					
+
 				} catch (final IllegalAccessException ex) {
-					
+
 				}
 				final String valS = String.valueOf(value);
 				final Integer val = Integer.valueOf(valS);
@@ -146,18 +152,18 @@ public class MMTApplication extends Application {
 				}
 			}
 		}
-		
+
 		return availableComponents;
 	}
-	
+
 	public Stage getPrimaryStage() {
 		return this.primaryStage;
 	}
-	
+
 	public static void main(final String[] args) {
 		Application.launch(args);
 	}
-	
+
 	@Override
 	public void start(final Stage primaryStage) {
 		if (this.started) {
@@ -169,7 +175,7 @@ public class MMTApplication extends Application {
 		}
 		this.primaryStage.show();
 	}
-	
+
 	// public void center(final AutoFocus stage) {
 	// final Screen screen = Screen.getPrimary();
 	// final Rectangle2D bounds = screen.getVisualBounds();
@@ -180,13 +186,13 @@ public class MMTApplication extends Application {
 	// stage.setX((bounds.getWidth() / 2) - (MMTGUIConstants.GUI_WIDTH / 2));
 	// stage.setY((bounds.getHeight() / 2) - (MMTGUIConstants.GUI_HEIGHT / 2));
 	// }
-	
+
 	public void handleShowActionStage() {
 		if (this.primaryStage != this.actionStage) {
 			this.start(this.actionStage);
 		}
 	}
-	
+
 	public void handleShowNewMicroscopeStage() {
 		if (this.primaryStage != this.newMicroscopeStage) {
 			try {
@@ -207,7 +213,7 @@ public class MMTApplication extends Application {
 			this.start(this.newMicroscopeStage);
 		}
 	}
-	
+
 	public void handleShowOpenMicroscopeStage() {
 		if (this.primaryStage != this.openMicroscopeStage) {
 			try {
@@ -228,7 +234,7 @@ public class MMTApplication extends Application {
 			this.start(this.openMicroscopeStage);
 		}
 	}
-	
+
 	public void handleShowMicroscopeViewStage() {
 		if ((this.primaryStage != this.microscopeViewStage)) {
 			this.start(this.microscopeViewStage);
@@ -237,19 +243,19 @@ public class MMTApplication extends Application {
 		}
 		this.microscopeViewStage.configurePane(this.elements);
 	}
-	
+
 	public void updateElementsAndPositions(
 			final List<MicroscopeComponent> elements) {
 		this.elements.clear();
 		this.elements.addAll(elements);
-		
+
 		this.microscopeViewStage.configurePane(this.elements);
 	}
-	
+
 	public void setSelectedTier(final int tier) {
 		this.selectedTier = tier;
 	}
-	
+
 	public void openMicroscope(final String value) {
 		final String path = this.loadableMicroscopesPaths.get(value);
 		final List<MicroscopeComponent> loadedElements = new ArrayList<MicroscopeComponent>();
@@ -275,13 +281,13 @@ public class MMTApplication extends Application {
 		} else {
 			this.elements.addAll(loadedElements);
 		}
-		
+
 		this.microscope = loadedMic;
 		this.microscope.setTier(this.selectedTier);
 		this.microscopeViewStage.setMicroscope(this.microscope);
 		this.handleShowMicroscopeViewStage();
 	}
-	
+
 	public void createNewMicroscope(final String value) {
 		final List<MicroscopeComponent> loadedElements = new ArrayList<MicroscopeComponent>();
 		Microscope loadedMic = null;
@@ -316,6 +322,6 @@ public class MMTApplication extends Application {
 		this.microscope.setTier(this.selectedTier);
 		this.microscopeViewStage.setMicroscope(this.microscope);
 		this.handleShowMicroscopeViewStage();
-		
+
 	}
 }

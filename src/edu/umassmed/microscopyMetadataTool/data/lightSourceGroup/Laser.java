@@ -8,16 +8,16 @@ import java.util.Map;
 import javafx.scene.image.Image;
 
 public class Laser extends LightSourceFluorescenceGroup {
-
+	
 	private static Integer TIER = 1;
 	private static Double PERCENT_WIDTH = 0.2333398096;
 	private static Double PERCENT_HEIGHT = 0.09928113464;
-
+	
 	private static final Path path = Paths.get(System.getProperty("user.dir")
 			+ File.separator + "images" + File.separator
 			+ "LightSource_Fluorescence_Laser.png");
 	private static final Image img = new Image(Laser.path.toUri().toString());
-	
+
 	private final String type;
 	private final String laserMedium;
 	private final String wavelength;
@@ -26,10 +26,10 @@ public class Laser extends LightSourceFluorescenceGroup {
 	private final String pulse;
 	private final String pockelCell;
 	private final String repetitionRate;
-
+	
 	public Laser(final Double positionX, final Double positionY) {
 		super("New Laser", Laser.TIER, positionX, positionY);
-		
+
 		this.type = "type";
 		this.laserMedium = "laserMedium";
 		this.wavelength = "wavelength";
@@ -38,17 +38,16 @@ public class Laser extends LightSourceFluorescenceGroup {
 		this.pulse = "pulse";
 		this.pockelCell = "pockelCell";
 		this.repetitionRate = "repetitionRate";
-
+		
 		this.setPercentSizeWidth(Laser.PERCENT_WIDTH);
 		this.setPercentSizeHeight(Laser.PERCENT_HEIGHT);
 	}
-
+	
 	@Override
 	public Map<String, Integer> getTiers() {
 		final Map<String, Integer> tiers = super.getTiers();
-		tiers.put("tier", 3);
-		tiers.put("manufacturer", 3);
-		tiers.put("model", 3);
+		tiers.put("manufacturer", 2);
+		tiers.put("model", 2);
 		tiers.put("type", 5);
 		tiers.put("laserMedium", 5);
 		tiers.put("wavelength", 2);
@@ -59,7 +58,7 @@ public class Laser extends LightSourceFluorescenceGroup {
 		tiers.put("repetitionRate", 5);
 		return tiers;
 	}
-
+	
 	@Override
 	public Image getImage() {
 		return Laser.img;

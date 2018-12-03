@@ -32,15 +32,15 @@ import edu.umassmed.microscopyMetadataTool.data.MicroscopeComponent;
 import edu.umassmed.microscopyMetadataTool.data.piezoelectricFocusingGroup.PiezoelectricObjectiveFocusing;
 
 public class MMTMicroscopeConfigurationViewPane extends StackPane {
-	
+
 	private final MMTApplication app;
 	private final MMTMicroscopeViewPane viewPane;
-	
+
 	private Microscope microscope;
-	
+
 	private Double mouseClickPositionX, mouseClickPositionY;
 	private Double orgSceneX, orgSceneY;
-	
+
 	public MMTMicroscopeConfigurationViewPane(final MMTApplication app,
 			final MMTMicroscopeViewPane viewPane) {
 		this.app = app;
@@ -64,12 +64,12 @@ public class MMTMicroscopeConfigurationViewPane extends StackPane {
 					BackgroundPosition.CENTER, bgSize);
 			this.setBackground(new Background(bg));
 		}
-		
+
 		this.mouseClickPositionX = null;
 		this.mouseClickPositionY = null;
 		this.orgSceneX = null;
 		this.orgSceneY = null;
-		
+
 		final ContextMenu contextMenu = new ContextMenu();
 		final MenuItem addNewElement = new MenuItem("Add element");
 		addNewElement.setOnAction(new EventHandler<ActionEvent>() {
@@ -81,7 +81,7 @@ public class MMTMicroscopeConfigurationViewPane extends StackPane {
 			}
 		});
 		contextMenu.getItems().addAll(addNewElement);
-		
+
 		this.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
 			@Override
 			public void handle(final ContextMenuEvent event) {
@@ -97,7 +97,7 @@ public class MMTMicroscopeConfigurationViewPane extends StackPane {
 			}
 		});
 	}
-	
+
 	public void configurePane(final List<MicroscopeComponent> elements) {
 		// System.out.println("CONFIGURE PANE");
 		this.getChildren().clear();
@@ -170,7 +170,7 @@ public class MMTMicroscopeConfigurationViewPane extends StackPane {
 				public void handle(final MouseEvent event) {
 					b.setOpacity(0.4);
 				}
-
+				
 			});
 			b.setOnMouseExited(new EventHandler<MouseEvent>() {
 				@Override
@@ -184,7 +184,7 @@ public class MMTMicroscopeConfigurationViewPane extends StackPane {
 					if ((mouseEvent.getButton() == MouseButton.SECONDARY)
 							|| ((mouseEvent.getButton() == MouseButton.PRIMARY) && mouseEvent
 									.isControlDown())) {
-						
+
 					} else {
 						// System.out.println("setOnMousePressed");
 						b.setBorder(new Border(new BorderStroke(Color.BLACK,
@@ -237,7 +237,7 @@ public class MMTMicroscopeConfigurationViewPane extends StackPane {
 			// DragResizer.makeResizable(b);
 		}
 	}
-	
+
 	public void setMicroscope(final Microscope mic) {
 		this.microscope = mic;
 		if (this.microscope != null) {
