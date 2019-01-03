@@ -20,7 +20,7 @@ import edu.umassmed.microscopyMetadataTool.data.MicroscopeComponent;
 import edu.umassmed.microscopyMetadataTool.data.subElements.ComponentSubElement;
 
 public class ClassUtils {
-	
+
 	public static List<Class<? extends ComponentSubElement>> getAllSubElementsClasses() {
 		final String packageName = "edu.umassmed.microscopyMetadataTool.data.subElements";
 		final Class<ComponentSubElement> superClass = ComponentSubElement.class;
@@ -38,7 +38,7 @@ public class ClassUtils {
 		}
 		return new ArrayList<Class<? extends ComponentSubElement>>();
 	}
-	
+
 	public static List<Class<? extends MicroscopeComponent>> getAllComponentsClasses() {
 		final String packageName = "edu.umassmed.microscopyMetadataTool.data";
 		final Class<MicroscopeComponent> superClass = MicroscopeComponent.class;
@@ -56,12 +56,12 @@ public class ClassUtils {
 		}
 		return new ArrayList<Class<? extends MicroscopeComponent>>();
 	}
-	
+
 	private static <T> List<Class<? extends T>> getClasses(
 			final String packageName, final Class<T> superClass,
 			final List<String> subDirExclusions) throws ClassNotFoundException,
 			IOException, URISyntaxException {
-
+		
 		final String path = packageName.replace('.', '/');
 		final List<File> files = ClassUtils.getResourcesInPath(path);
 		final List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>();
@@ -71,7 +71,7 @@ public class ClassUtils {
 		}
 		return classes;
 	}
-	
+
 	private static List<File> getResourcesInPath(final String path)
 			throws URISyntaxException, IOException {
 		final List<File> files = new ArrayList<File>();
@@ -100,7 +100,7 @@ public class ClassUtils {
 		}
 		return files;
 	}
-	
+
 	/**
 	 * Recursive method used to find all classes in a given directory and
 	 * subdirs.

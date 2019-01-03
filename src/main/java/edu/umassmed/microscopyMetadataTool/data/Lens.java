@@ -8,15 +8,15 @@ import java.util.Map;
 import javafx.scene.image.Image;
 
 public class Lens extends MicroscopeComponent {
-	
+
 	private static Integer TIER = 2;
 	private static Double PERCENT_WIDTH = 0.03341752477;
 	private static Double PERCENT_HEIGHT = 0.1045269089;
-
+	
 	private static final Path path = Paths.get(System.getProperty("user.dir")
 			+ File.separator + "images" + File.separator + "Lens.png");
 	private static final Image img = new Image(Lens.path.toUri().toString());
-
+	
 	private final String geometry;
 	private final String magnification;
 	private final String diameter;
@@ -24,10 +24,10 @@ public class Lens extends MicroscopeComponent {
 	private final String attenuationCoefficient;
 	private final String inputFocalDistance;
 	private final String outputFocalDistance;
-	
+
 	public Lens(final Double positionX, final Double positionY) {
 		super("New Lens", Lens.TIER, positionX, positionY);
-
+		
 		this.geometry = "geometry";
 		this.magnification = "magnification";
 		this.diameter = "diameter";
@@ -35,11 +35,11 @@ public class Lens extends MicroscopeComponent {
 		this.attenuationCoefficient = "attenuationCoefficient";
 		this.inputFocalDistance = "inputFocalDistance";
 		this.outputFocalDistance = "outputFocalDistance";
-		
+
 		this.setPercentSizeWidth(Lens.PERCENT_WIDTH);
 		this.setPercentSizeHeight(Lens.PERCENT_HEIGHT);
 	}
-
+	
 	@Override
 	public Map<String, Integer> getTiers() {
 		final Map<String, Integer> tiers = super.getTiers();
@@ -54,7 +54,7 @@ public class Lens extends MicroscopeComponent {
 		tiers.put("outputFocalDistance", 5);
 		return tiers;
 	}
-
+	
 	@Override
 	public Image getImage() {
 		return Lens.img;

@@ -6,19 +6,19 @@ import java.util.List;
 import java.util.Map;
 
 public class ReflectanceRange extends ComponentSubElement {
-	
+
 	private final String cutOn;
 	private final String cutOff;
 	private final String cutOnTolerance;
 	private final String cutOffTolerance;
-	
+
 	public ReflectanceRange() {
 		this.cutOn = "cutOn";
 		this.cutOff = "cutOff";
 		this.cutOnTolerance = "cutOnTolerance";
 		this.cutOffTolerance = "cutOffTolerance";
 	}
-	
+
 	@Override
 	public Map<String, Integer> getTiers(final Integer parentTier) {
 		final Map<String, Integer> tiers = new LinkedHashMap<String, Integer>();
@@ -28,12 +28,10 @@ public class ReflectanceRange extends ComponentSubElement {
 		tiers.put("cutOffTolerance", 5);
 		return tiers;
 	}
-	
+
 	@Override
 	public List<String> getNotEditableFields() {
 		final List<String> notEditableField = new ArrayList<String>();
-		// notEditableField.add("positionX");
-		// notEditableField.add("positionY");
 		return notEditableField;
 	}
 }

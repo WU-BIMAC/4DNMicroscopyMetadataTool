@@ -12,10 +12,12 @@ public class MMTActionPane extends GridPane {
 	
 	private static final String CREATE_BUTTON = "Create a new Microscope";
 	private static final String USE_BUTTON = "Use a Microscope";
+	
+	private static final String GEN_MODEL_BUTTON = "Generate model";
 
 	private final MMTApplication app;
 
-	private final Button createButton, useButton;
+	private final Button createButton, useButton, genButton;
 	private final ComboBox<String> tiersCombo;
 
 	public MMTActionPane(final MMTApplication app) {
@@ -60,5 +62,16 @@ public class MMTActionPane extends GridPane {
 			}
 		});
 		this.add(this.useButton, 1, 1);
+		
+		this.genButton = new Button(MMTActionPane.GEN_MODEL_BUTTON);
+		this.genButton.setPrefWidth((MMTGUIConstants.FIELD_WIDTH_XLARGE * 2)
+				+ MMTGUIConstants.GAP);
+		this.genButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(final ActionEvent evt) {
+				app.generateModel();
+			}
+		});
+		this.add(this.genButton, 0, 2, 2, 1);
 	}
 }

@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 public class TransmittanceRange extends ComponentSubElement {
-
+	
 	private final String cutIn;
 	private final String cutOut;
 	private final String cutInTolerance;
 	private final String cutOutTolerance;
 	private final String transmittance;
-	
+
 	public TransmittanceRange() {
 		this.cutIn = "cutIn";
 		this.cutOut = "cutOut";
@@ -20,7 +20,7 @@ public class TransmittanceRange extends ComponentSubElement {
 		this.cutOutTolerance = "cutOutTolerance";
 		this.transmittance = "transmittance";
 	}
-	
+
 	@Override
 	public Map<String, Integer> getTiers(final Integer parentTier) {
 		final Map<String, Integer> tiers = new LinkedHashMap<String, Integer>();
@@ -31,12 +31,10 @@ public class TransmittanceRange extends ComponentSubElement {
 		tiers.put("transmittance", 3);
 		return tiers;
 	}
-
+	
 	@Override
 	public List<String> getNotEditableFields() {
 		final List<String> notEditableField = new ArrayList<String>();
-		// notEditableField.add("positionX");
-		// notEditableField.add("positionY");
 		return notEditableField;
 	}
 }

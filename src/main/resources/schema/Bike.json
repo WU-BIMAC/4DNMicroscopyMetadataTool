@@ -1,0 +1,18 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema",
+	"id": "Bike.json",
+	"type": "object",
+	"extends": {
+		"type": "object",
+		"javaType": "testPackage.Vehicle"
+    },
+	"title": "Bike",
+	"description": "A bike is used for transportation.",
+	"properties": {
+		"type": { 
+			"enum": [ "sport", "chopper" ],
+			"description": "The type of bike."
+		}
+	},
+	"required": ["type"]
+}
